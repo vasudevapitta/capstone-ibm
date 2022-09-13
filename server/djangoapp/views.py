@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from .models import CarMake, CarModel, CarDealer, DealerReview
 
 # from .restapis import related methods
-from .restapis import get_dealers_from_cf, get_dealer_by_id_from_cf
+from .restapis import get_dealers_from_cf, get_dealer_by_id_from_cf, get_dealer_reviews_from_cf
 
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
@@ -95,13 +95,15 @@ def get_dealerships(request):
 def get_dealer_details(request, id):
     if request.method == "GET":
         context = {}
-        url = "https://us-south.functions.appdomain.cloud/api/v1/web/1584867a-6fef-43c6-b236-e7f053af06a5/cardealership_package/dealership"
-        dealer = get_dealer_by_id_from_cf(url, id)
+        dealer_url = "https://us-south.functions.appdomain.cloud/api/v1/web/1584867a-6fef-43c6-b236-e7f053af06a5/cardealership_package/dealership"
+        dealer = get_dealer_by_id_from_cf(dealer_url, id=id)
         context["dealer"] = dealer
-
+    
         review_url = "https://us-south.functions.appdomain.cloud/api/v1/web/1584867a-6fef-43c6-b236-e7f053af06a5/cardealership_package/get_review"
-        reviews = get_dealer_by_id_from_cf(review_url, id=id)
+        reviews = get_dealer_reviews_from_cf(review_url, id=id)
+        print(reviews)
         context["reviews"] = reviews
+        
         return render(request, 'djangoapp/dealer_details.html', context)
 
 # Create a `add_review` view to submit a review
