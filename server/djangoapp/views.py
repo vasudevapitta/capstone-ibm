@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from .models import CarMake, CarModel, CarDealer, DealerReview
 
 # from .restapis import related methods
-from .restapis import get_dealers_from_cf, get_dealer_by_id_from_cf, get_dealer_reviews_from_cf
+from .restapis import get_request, post_request, get_dealers_from_cf, get_dealer_by_id_from_cf, get_dealer_reviews_from_cf
 
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
@@ -101,7 +101,6 @@ def get_dealer_details(request, id):
     
         review_url = "https://us-south.functions.appdomain.cloud/api/v1/web/1584867a-6fef-43c6-b236-e7f053af06a5/cardealership_package/get_review"
         reviews = get_dealer_reviews_from_cf(review_url, id=id)
-        print(reviews)
         context["reviews"] = reviews
         
         return render(request, 'djangoapp/dealer_details.html', context)
